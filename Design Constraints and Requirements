@@ -6,10 +6,14 @@
 -Patient Records for Patients 
 -User Management for Admin 
 -Patient and Dentist Appointment Reminders 
--Patient and Dentist Account Creator and as verbs: Schedule, Manage, Remind, Collect, and Update.
+-Patient and Dentist Account Creator 
+and as verbs: Schedule, Manage, Remind, Collect, and Update.
 
 2.2.2: Objectives:
-The main objective in this software would be to streamline and facilitate the process for booking a dental appointment. As well, we would like to improve the user experience for Dentists, Patients and Admins to allow them to book an appointment in peace and to know that they can see when their appointments are. In terms of adjectives we would like the software to be described as Efficient, Secure, Reliable, User Friendly, Accessible, Modern, and Adaptable
+The main objective in this software would be to streamline and facilitate the process for booking a dental appointment. 
+As well, we would like to improve the user experience for Dentists, Patients and Admins to allow them to book an appointment in peace
+and to know that they can see when their appointments are. 
+In terms of adjectives we would like the software to be described as Efficient, Secure, Reliable, User Friendly, Accessible, Modern, and Adaptable
 
 2.2.3:Design Constraints:
 a. Economic factors: As this project is to be done in the scope of the course, we will be limited to using as little money as possible.
