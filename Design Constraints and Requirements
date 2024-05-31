@@ -1,14 +1,18 @@
 Design Constraints:
 a. Economic factors: As this project is to be done in the scope of the course, we will be limited to using as little money as possible.
 This may restrict some of our ability to design a software that is efficient, effective and looks good. 
-b. Regulatory compliance (Security and Access): As this project aims to aid the University of Regina Dentistry it will need to be secure and only be accessible by those who 
-need it. We will have to ensure that the database that it uses cannot be accessed by others and the data enclosed within it can only be accessed by appointed admins.
-c. Reliability: As this project is for a dental practice, it will require that the software is reliable and can support more than one patient and/or dentist accessing 
+
+b. Regulatory compliance (Security and Access): As this project aims to aid the University of Regina Dentistry it will need to be secure and only be accessible by those 
+who need it. We will have to ensure that the database that it uses cannot be accessed by others and the data enclosed within it can only be accessed by appointed admins.
+c. Reliability: As this project is for a dental practice, it will require that the software is reliable and can support more than one patient and/or dentist accessing it 
+at once
+
 the software at one time and any situation that may occur from something like this happening is tested thoroughly to ensure that the software is reliable.
+
 e. Ethics: As this project may involve data from people we currently do not know we need to ensure that their privacy is ensured and none of their data is leaked. 
 As well, we will need to ensure that any and all data is correct and nothing false is displayed, and we will need to give patients the ability to change some of their own 
-data as needed (i.e phone number, address, etc.. and not stuff like dental records). We will also need transparency with the software to ensure that the patients and dentists
-know who can read their data and who has access to what.
+data as needed (i.e phone number, address, etc.. and not stuff like dental records). We will also need transparency with the software to ensure that the patients
+and dentists know who can read their data and who has access to what.
 
 Requirements: 
 Java based coding
