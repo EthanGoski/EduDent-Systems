@@ -45,9 +45,10 @@ and dentists know who can read their data and who has access to what.
 3. Solution
    3.1 Solution 1:
    [LofiprototypeEduDent.pdf](https://github.com/user-attachments/files/16340630/LofiprototypeEduDent.pdf)
-This was our initial solution, we chose to do a low fidelity prototype to ensure that we knew which main portions we wanted. However, we did not choose this to be our final design as it lacked enough depth to be usable for an entire dentist office and was more like a singular dentist's office. As such, we knew that we needed to add more to it, such as specific colors, better UI, more usability for dentists and patients and some other not as important features.
+   This was our initial solution, we chose to do a low fidelity prototype to ensure that we knew which main portions we wanted. However, we did not choose this to be our final design as it lacked enough depth to be usable for an entire dentist office and was more like a singular dentist's office. As such, we knew that we needed to add more to it, such as specific colors, better UI, more usability for dentists and patients and some other not as important features.
+
   3.2 Solution 2:
    [EduDent - Dentist Clinic Management system.pdf](https://github.com/user-attachments/files/16340642/EduDent.-.Dentist.Clinic.Management.system.pdf)
-   This is our second solution, it is a high fidelity prototype that allows us to visualize and use some of the features we envisioned. This solution contains some coloring options and some basic feature usage. However, this solution is not linked to any databasing so anything we do is limited to the file/figma itself. We can use the key points of this solution to spring board into a final solution where we will decide on colors and fully flesh out features and how the application will react with these features.
+      This is our second solution, it is a high fidelity prototype that allows us to visualize and use some of the features we envisioned. This solution contains some coloring options and some basic feature usage. However, this solution is not linked to any databasing so anything we do is limited to the file/figma itself. We can use the key points of this solution to spring board into a final solution where we will decide on colors and fully flesh out features and how the application will react with these features.
 
    
