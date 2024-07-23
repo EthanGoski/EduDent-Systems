@@ -279,19 +279,6 @@ Test cases were derived from the prime paths to ensure that all critical paths i
 ### User Def-Use Graph
 ![image](https://github.com/user-attachments/assets/b719292f-2f02-42a6-b1da-46ba59d57277)
 
-
-
-```mermaid
-graph TD
-    A[Initialize Prescription Details] --> B[Enter prescription ID, patient ID, medication, dosage, instructions, and doctor username]
-    B --> C{Prescription Exists?}
-    C -- Yes --> D[Update existing prescription]
-    C -- No --> E[Create new prescription]
-    D --> F[Save prescription info to the database]
-    E --> F[Save prescription info to the database]
-    F --> G[Send prescription details to the patient]
-```
-
 ## DU Paths and Test Cases
 
 ### DU Paths for Managing Patients
