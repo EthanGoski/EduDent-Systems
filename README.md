@@ -259,6 +259,7 @@ Test cases were derived from the prime paths to ensure that all critical paths i
 ## Def-Use Graphs
 
 ### Managing Patients Def-Use Graph
+![image](https://github.com/user-attachments/assets/69d8f776-4fd9-4068-b076-e50dc3c130ba)
 
 ```mermaid
 graph TD
