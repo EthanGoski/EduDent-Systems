@@ -521,3 +521,4 @@ While the final solution meets the current needs of the University of Regina Cam
 5. **Advanced Reporting**: Enhance reporting capabilities to provide deeper insights into clinic operations and patient care trends.
 6. **Machine Learning**: Explore the integration of machine learning algorithms to predict patient no-shows, optimize appointment schedules, and personalize patient care.
 
+
