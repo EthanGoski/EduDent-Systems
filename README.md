@@ -179,8 +179,7 @@ Conclusion: The appointment scheduling system works well but could be improved w
 #### Accounts for: Managing prescription-related tasks including adding, removing, updating, and viewing prescriptions.
 Testing: Comprehensive tests including unit, integration, and system tests to cover all aspects of prescription management.
 Conclusion: The system is effective in managing prescriptions but could be enhanced with features like prescription validation and alert systems for better patient safety.
-This table should provide a clear and concise overview of the MVPs, their functionalities, testing methods, and conclusions. If you need further adjustments or additional details, feel free to ask!
-
+This table should provide a clear and concise overview of the MVPs, their functionalities, testing methods, and conclusions. 
 
 ## Class Diagram 
 ![CDentist drawio-4](https://github.com/mazenabid/ClinicalManagementSystem-Java/assets/87061766/5cffe072-2b28-4303-a575-ec3e2a6c4fd9)
