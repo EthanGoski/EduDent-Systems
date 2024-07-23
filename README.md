@@ -258,30 +258,29 @@ Test cases were derived from the prime paths to ensure that all critical paths i
 
 ## Def-Use Graphs
 
-### Managing Patients Def-Use Graph
+### Appointment Def Use Graph
 ![image](https://github.com/user-attachments/assets/69d8f776-4fd9-4068-b076-e50dc3c130ba)
 
-```mermaid
-graph TD
-    A[Initialize Patient Details] --> B[Enter patient name, ID, and contact info]
-    B --> C{Patient Exists?}
-    C -- Yes --> D[Update patient info]
-    C -- No --> E[Create new patient]
-    D --> F[Save patient info to the database]
-    E --> F[Save patient info to the database]
-```
-### Scheduling Appointments Def-Use Graph
-```mermaid
-graph TD
-    A[Initialize Appointment Details] --> B[Enter appointment ID, date, time, patient ID, and doctor username]
-    B --> C{Conflict Exists?}
-    C -- Yes --> D[Resolve appointment conflict]
-    C -- No --> E[Save appointment to the database]
-    D --> E[Save appointment to the database]
-    E --> F[Send appointment reminder to patient and doctor]
-```
+### Clinic Management Def Use Graph
+![image](https://github.com/user-attachments/assets/1cc084d5-8b95-4e80-ace5-ecd259e6281b)
 
-### Managing Prescriptions Def-Use Graph
+### Doctor Def-Use Graph
+![image](https://github.com/user-attachments/assets/b0a325fc-5136-46ef-bf7e-2d5f10fae951)
+
+### Patient Def-Use Graph
+![image](https://github.com/user-attachments/assets/a0990707-507b-4667-be8a-0bd161d981d0)
+
+### Prescription Def-Use Graph
+![image](https://github.com/user-attachments/assets/d3d37f19-9fe4-4ba9-8671-bc5a8233baf8)
+
+### Receptionist Def-Use Graph
+![image](https://github.com/user-attachments/assets/0c879455-2ae5-49ab-8ef6-4030af0b1bad)
+
+### User Def-Use Graph
+![image](https://github.com/user-attachments/assets/b719292f-2f02-42a6-b1da-46ba59d57277)
+
+
+
 ```mermaid
 graph TD
     A[Initialize Prescription Details] --> B[Enter prescription ID, patient ID, medication, dosage, instructions, and doctor username]
