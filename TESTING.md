@@ -156,8 +156,7 @@ Let's consider the **Appointment Scheduling** and **User Authentication** fe
 # Use Case Testing:
 
 ### Use Case Testing:
-
-Let's consider the primary use cases for the system:
+The primary use cases for the system:
 
 1. **UC1: User Login**
 2. **UC2: Schedule Appointment**
