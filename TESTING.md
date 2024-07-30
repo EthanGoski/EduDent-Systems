@@ -160,8 +160,8 @@ The primary use cases for the system:
 
 1. **UC1: User Login**
 2. **UC2: Schedule Appointment**
-3. **UC3: Edits Patients**
-4. **UC4: Add Patient Record**
+3. **UC3: Deleting Patients**
+4. **UC4: Edit Patient Record**
 5. **UC5: View Daily Appointments**
 6. **UC6: Add Prescription**
 
