@@ -1,432 +1,264 @@
-# Tests for Each file
-
-# AppointmentTest File
-
-## 1.Boundary Value Testing
-
-Tests that focus on the edge values of input domains.
-
-```java
-@Test
-public void testSetDate() {
-    // Test minimum date boundary
-    appointment.setDate("2024-01-01");
-    assertEquals("2024-01-01", appointment.getDate());
-
-    // Test maximum date boundary
-    appointment.setDate("2024-12-31");
-    assertEquals("2024-12-31", appointment.getDate());
-}
-```
-## 2.Equivalence Class Testing
-Tests that validate representative values from different classes of inputs.
-```java
-@Test
-public void testSetDate() {
-    // Valid date
-    appointment.setDate("2024-08-05");
-    assertEquals("2024-08-05", appointment.getDate());
-
-    // Invalid date (equivalence class of invalid dates)
-    try {
-        appointment.setDate("invalid-date");
-        fail("Should throw an exception for invalid date");
-    } catch (IllegalArgumentException e) {
-        // Expected exception
-    }
-}
-```
-## 3.Decision Table Testing
-```java
-@Test
-public void testDecisionTableForAppointment() {
-    // New patient, valid date and time
-    patient = new Patient("John Doe", "P001", "555-1234");
-    appointment = new Appointment("A001", "2024-07-05", "10:00 AM", patient, doctor);
-    assertTrue(appointment.isValid());
-
-    // Returning patient, valid date and time
-    patient.setReturning(true);
-    appointment = new Appointment("A002", "2024-07-06", "11:00 AM", patient, doctor);
-    assertTrue(appointment.isValid());
-
-    // Invalid date, valid time
-    try {
-        appointment = new Appointment("A003", "invalid-date", "11:00 AM", patient, doctor);
-        fail("Should throw an exception for invalid date");
-    } catch (IllegalArgumentException e) {
-        // Expected exception
-    }
-}
-```
-## 4.State Transition Testing
-```java
-@Test
-public void testStateTransition() {
-    // Initial state: Scheduled
-    assertEquals(AppointmentState.SCHEDULED, appointment.getState());
-
-    // Transition to Completed
-    appointment.complete();
-    assertEquals(AppointmentState.COMPLETED, appointment.getState());
-
-    // Transition to Cancelled from Completed should fail
-    try {
-        appointment.cancel();
-        fail("Cannot cancel a completed appointment");
-    } catch (IllegalStateException e) {
-        // Expected exception
-    }
-}
-```
-## 5.Use Case testing
-```java
-@Test
-public void testUseCaseAppointmentScheduling() {
-    // Receptionist logs in and schedules an appointment
-    User receptionist = new User("receptionist", "password");
-    assertTrue(receptionist.login());
-
-    // Enter patient details and schedule appointment
-    Patient patient = new Patient("Bob", "P002", "555-5678");
-    receptionist.addPatient(patient);
-    assertTrue(patient.isInSystem());
-    // Check available slots and schedule appointment
-    Appointment appointment = new Appointment("A004", "2024-07-10", "12:00 PM", patient, doctor);
-    receptionist.scheduleAppointment(appointment);
-    assertTrue(appointment.isScheduled());
-}
-```
-
-
+# Boundary Value Analysis (BVA)
 
+Boundary Value Analysis (BVA) is a software testing technique that involves creating test cases that focus on the values at the boundaries. It is based on the assumption that errors are most likely to occur at the edges of input ranges. BVA helps in identifying defects in the boundaries rather than within the ranges.
 
+### Input Conditions and Boundaries:
 
+1. **Patient ID Length**: The system requires a Patient ID to be exactly 6 characters long.
+    - **Boundaries**: 5 (just below), 6 (exact boundary), 7 (just above)
+2. **Appointment Time Slots**: Appointments can be scheduled from 9:00 AM to 5:00 PM in 15-minute intervals.
+    - **Boundaries**: 8:45 AM (just below), 9:00 AM (start boundary), 5:00 PM (end boundary), 5:15 PM (just above)
+3. **Doctor's Daily Appointment Limit**: A doctor can have a maximum of 10 appointments per day.
+    - **Boundaries**: 9 (just below), 10 (exact boundary), 11 (just above)
 
+### Test Cases:
 
+| Test Case ID | Input Condition | Boundary Values | Expected Result |
+| --- | --- | --- | --- |
+| TC1 | Patient ID Length | 5 characters | Error: Patient ID must be 6 characters long. |
+| TC2 | Patient ID Length | 6 characters | Success: Patient ID accepted. |
+| TC3 | Patient ID Length | 7 characters | Error: Patient ID must be 6 characters long. |
+| TC4 | Appointment Time Slots | 8:45 AM | Error: Invalid appointment time. |
+| TC5 | Appointment Time Slots | 9:00 AM | Success: Appointment scheduled. |
+| TC6 | Appointment Time Slots | 5:00 PM | Success: Appointment scheduled. |
+| TC7 | Appointment Time Slots | 5:15 PM | Error: Invalid appointment time. |
+| TC8 | Doctor's Daily Appointments | 9 appointments | Success: Appointment added. |
+| TC9 | Doctor's Daily Appointments | 10 appointments | Success: Appointment added. |
+| TC10 | Doctor's Daily Appointments | 11 appointments | Error: Maximum appointment limit reached. |
 
+# Equivalence Class Testing
 
+Equivalence Class Testing is a black-box testing technique used to reduce the number of test cases by dividing input data into equivalence classes. Each class represents a set of valid or invalid inputs that should be treated similarly by the system. Here's how we can apply this method to the Dental Clinic Management System's features:
 
+### 1. Patient ID Input
 
-# DoctorTest.java
+### Equivalence Classes:
 
-## 1.Boundary Value Testing
-```java
-@Test
-public void testDoctorIDBoundaryValues() {
-    // Minimum length ID
-    doctor.setDoctorID("D1");
-    assertEquals("D1", doctor.getDoctorID());
+- **Valid Patient IDs:** 1-6 number characters (e.g., 123456)
+- **Invalid Patient IDs:** alphanumeric characters, IDs longer than 6 characters, empty strings
 
-    // Maximum length ID
-    doctor.setDoctorID("D123456789012345");
-    assertEquals("D123456789012345", doctor.getDoctorID());
-}
-```
-## 2.Equivalence Class Testing
-```java
-@Test
-public void testSetSpecializationEquivalenceClasses() {
-    // Valid specialization
-    doctor.setSpecialization("Orthodontics");
-    assertEquals("Orthodontics", doctor.getSpecialization());
+### Test Cases:
 
-    // Invalid specialization
-    try {
-        doctor.setSpecialization("123");
-        fail("Should throw an exception for invalid specialization");
-    } catch (IllegalArgumentException e) {
-        // Expected exception
-    }
-}
-```
-## 3.Decision Table Testing
-```java
-@Test
-public void testDecisionTableForDoctorAvailability() {
-    // Available on Monday
-    doctor.setAvailability("Monday", true);
-    assertTrue(doctor.isAvailable("Monday"));
-
-    // Not available on Tuesday
-    doctor.setAvailability("Tuesday", false);
-    assertFalse(doctor.isAvailable("Tuesday"));
-
-    // Invalid day
-    try {
-        doctor.setAvailability("InvalidDay", true);
-        fail("Should throw an exception for invalid day");
-    } catch (IllegalArgumentException e) {
-        // Expected exception
-    }
-}
-```
-## 4.State Transition Testing
-```java
-@Test
-public void testStateTransition() {
-    // Initial state: Active
-    assertEquals(DoctorState.ACTIVE, doctor.getState());
-
-    // Transition to Inactive
-    doctor.deactivate();
-    assertEquals(DoctorState.INACTIVE, doctor.getState());
-
-    // Transition to Retired from Inactive
-    doctor.retire();
-    assertEquals(DoctorState.RETIRED, doctor.getState());
-}
-```
-## 5.Use Case testing
-```java
-@Test
-public void testUseCaseDoctorLogin() {
-    // Doctor logs in
-    Doctor doctor = new Doctor("doc1", "password");
-    assertTrue(doctor.login());
-
-    // Doctor updates profile
-    doctor.setSpecialization("Pediatrics");
-    assertEquals("Pediatrics", doctor.getSpecialization());
-
-    // Doctor checks availability
-    doctor.setAvailability("Wednesday", true);
-    assertTrue(doctor.isAvailable("Wednesday"));
-}
-```
-
-
-
-
-
-
-
-
-
-
-
-# PatientTest.java
-
-## 1.Boundary Value Testing
-```java
-@Test
-public void testPatientIDBoundaryValues() {
-    // Minimum length ID
-    patient.setPatientID("P1");
-    assertEquals("P1", patient.getPatientID());
-
-    // Maximum length ID
-    patient.setPatientID("P123456789012345");
-    assertEquals("P123456789012345", patient.getPatientID());
-}
-```
-## 2.Equivalence Class Testing
-```java
-@Test
-public void testSetContactInfoEquivalenceClasses() {
-    // Valid contact info
-    patient.setContactInfo("555-0000");
-    assertEquals("555-0000", patient.getContactInfo());
-
-    // Invalid contact info (equivalence class of invalid contacts)
-    try {
-        patient.setContactInfo("invalid-contact");
-        fail("Should throw an exception for invalid contact info");
-    } catch (IllegalArgumentException e) {
-        // Expected exception
-    }
-}
-```
-## 3.Decision Table Testing
-```java
-@Test
-public void testDecisionTableForPatientUpdate() {
-    // Valid name and contact info
-    patient.setName("Jane Doe");
-    patient.setContactInfo("555-0000");
-    assertEquals("Jane Doe", patient.getName());
-    assertEquals("555-0000", patient.getContactInfo());
-
-    // Invalid name and valid contact info
-    try {
-        patient.setName("");
-        fail("Should throw an exception for invalid name");
-    } catch (IllegalArgumentException e) {
-        // Expected exception
-    }
-
-    // Valid name and invalid contact info
-    try {
-        patient.setContactInfo("invalid-contact");
-        fail("Should throw an exception for invalid contact info");
-    } catch (IllegalArgumentException e) {
-        // Expected exception
-    }
-}
-```
-## 4.State Transition Testing
-```java
-@Test
-public void testStateTransition() {
-    // Initial state: New patient
-    assertEquals(PatientState.NEW, patient.getState());
-
-    // Transition to Active
-    patient.activate();
-    assertEquals(PatientState.ACTIVE, patient.getState());
-
-    // Transition to Inactive from Active
-    patient.deactivate();
-    assertEquals(PatientState.INACTIVE, patient.getState());
-
-    // Invalid transition from Inactive to New
-    try {
-        patient.setState(PatientState.NEW);
-        fail("Cannot transition from Inactive to New");
-    } catch (IllegalStateException e) {
-        // Expected exception
-    }
-}
-```
-## 5.Use Case testing
-```java
-@Test
-public void testUseCasePatientRegistration() {
-    // Receptionist registers a new patient
-    User receptionist = new User("receptionist", "password");
-    assertTrue(receptionist.login());
-
-    // Receptionist enters patient details
-    Patient newPatient = new Patient("Alice Smith", "P002", "555-5678");
-    receptionist.addPatient(newPatient);
-    assertTrue(newPatient.isInSystem());
-
-    // Verify patient details
-    assertEquals("Alice Smith", newPatient.getName());
-    assertEquals("P002", newPatient.getPatientID());
-    assertEquals("555-5678", newPatient.getContactInfo());
-}
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# ReceptionestTest.java
-
-## 1.Boundary Value Testing
-```java
-@Test
-public void testAddPatientBoundaryValues() {
-    // Minimum length ID
-    Patient patientMinID = new Patient("John Doe", "P1", "555-1234");
-    receptionist.addPatient(patientMinID);
-    assertTrue(receptionist.getPatients().contains(patientMinID));
-
-    // Maximum length ID
-    Patient patientMaxID = new Patient("John Doe", "P123456789012345", "555-1234");
-    receptionist.addPatient(patientMaxID);
-    assertTrue(receptionist.getPatients().contains(patientMaxID));
-}
-```
-## 2.Equivalence Class Testing
-```java
-@Test
-public void testUpdatePatientEquivalenceClasses() {
-    receptionist.addPatient(patient);
-    
-    // Valid contact info
-    patient.setContactInfo("555-0000");
-    assertEquals("555-0000", receptionist.getPatients().get(0).getContactInfo());
-
-    // Invalid contact info (equivalence class of invalid contacts)
-    try {
-        patient.setContactInfo("invalid-contact");
-        fail("Should throw an exception for invalid contact info");
-    } catch (IllegalArgumentException e) {
-        // Expected exception
-    }
-}
-```
-## 3.Decision Table Testing
-```java
-@Test
-public void testDecisionTableForPatientManagement() {
-    // Add patient with valid details
-    Patient validPatient = new Patient("Jane Doe", "P002", "555-5678");
-    receptionist.addPatient(validPatient);
-    assertTrue(receptionist.getPatients().contains(validPatient));
-
-    // Remove patient with valid details
-    receptionist.removePatient(validPatient);
-    assertFalse(receptionist.getPatients().contains(validPatient));
-
-    // Add patient with invalid details
-    try {
-        Patient invalidPatient = new Patient("", "P003", "555-5678");
-        receptionist.addPatient(invalidPatient);
-        fail("Should throw an exception for invalid patient details");
-    } catch (IllegalArgumentException e) {
-        // Expected exception
-    }
-}
-```
-## 4.State Transition Testing
-```java
-@Test
-public void testStateTransition() {
-    // Initial state: No patients
-    assertEquals(0, receptionist.getPatients().size());
-
-    // Transition to having one patient
-    receptionist.addPatient(patient);
-    assertEquals(1, receptionist.getPatients().size());
-
-    // Transition to having no patients
-    receptionist.removePatient(patient);
-    assertEquals(0, receptionist.getPatients().size());
-
-    // Invalid transition: removing a non-existent patient
-    try {
-        receptionist.removePatient(patient);
-        fail("Should throw an exception for removing a non-existent patient");
-    } catch (IllegalStateException e) {
-        // Expected exception
-    }
-}
-```
-## 5.Use Case testing
-```java
-@Test
-public void testUseCaseManagingPatient() {
-    // Receptionist logs in and adds a new patient
-    User receptionistUser = new User("receptionist", "password");
-    assertTrue(receptionistUser.login());
-
-    // Add patient details
-    Patient newPatient = new Patient("Alice Smith", "P002", "555-5678");
-    receptionist.addPatient(newPatient);
-    assertTrue(newPatient.isInSystem());
-
-    // Verify patient details
-    assertEquals("Alice Smith", newPatient.getName());
-    assertEquals("P002", newPatient.getPatientID());
-    assertEquals("555-5678", newPatient.getContactInfo());
-}
-```
+| Test Case | Input | Expected Result |
+| --- | --- | --- |
+| 1 | "P001" | Invalid |
+| 2 | "A123B" | Invalid |
+| 3 | "!@#123" | Invalid (non-alphanumeric) |
+| 4 | "12345678901" | Invalid (more than 10 characters) |
+| 5 | "" | Invalid (empty string) |
+| 6 | 123456 | Valid |
 
+### 2. Appointment Time
 
+### Equivalence Classes:
 
+- **Valid Times:** Between 9:00 AM and 5:00 PM.
+- **Invalid Times:** Outside the range.
 
+### Test Cases:
 
+| Test Case | Input | Expected Result |
+| --- | --- | --- |
+| 1 | "09:00 AM" | Valid |
+| 2 | "10:15 AM" | Valid |
+| 3 | "05:15 PM" | Invalid (outside range) |
+| 4 | "04:07 PM" | Valid  |
+| 5 | "13:00 PM" | Invalid (incorrect format) |
 
+### 3. Doctor's Daily Appointment Limit
+
+### Equivalence Classes:
+
+- **Valid Number of Appointments:** 0-10 appointments
+- **Invalid Number of Appointments:** More than 10 appointments
+
+### Test Cases:
+
+| Test Case | Input (Number of Appointments) | Expected Result |
+| --- | --- | --- |
+| 1 | 0 | Valid |
+| 2 | 5 | Valid |
+| 3 | 10 | Valid |
+| 4 | 11 | Invalid (exceeds limit) |
+
+### 4. Prescription Details
+
+### Equivalence Classes:
+
+- **Valid Prescription Details:** Non-empty medication name, dosage, and instructions
+- **Invalid Prescription Details:** Empty fields, non-numeric dosage
+
+### Test Cases:
+
+| Test Case | Medication | Dosage | Instructions | Expected Result |
+| --- | --- | --- | --- | --- |
+| 1 | "Ibuprofen" | "200mg" | "Take twice daily" | Valid |
+| 2 | "" | "500mg" | "Take once daily" | Invalid (empty medication) |
+| 3 | "Paracetamol" | "" | "Take as needed" | Invalid (empty dosage) |
+| 4 | "Aspirin" | "abc" | "Take daily" | Invalid (non-numeric dosage) |
+| 5 | "Amoxicillin" | "500mg" | "" | Invalid (empty instructions) |
+
+---
+
+# State Transition:
+
+Let's consider the **Appointment Scheduling** and **User Authentication** features as examples for State Transition Testing.
+
+### State Diagram for User Authentication
+
+1. **Initial State:** Logged Out
+2. **State 1:** Receptionist Logged In
+3. **State 2:** Doctor Logged In
+4. **Final State:** Logged Out
+
+### Possible Transitions:
+
+- **T1:** Logged Out → Receptionist Logged In (Successful receptionist login)
+- **T2:** Logged Out → Doctor Logged In (Successful doctor login)
+- **T3:** Any State → Logged Out (Logout action)
+- **T4:** Receptionist Logged In → Receptionist Logged In (Invalid login attempt)
+- **T5:** Doctor Logged In → Doctor Logged In (Invalid login attempt)
+
+### Test Cases Based on State Transitions:
+
+| Test Case | Initial State | Input | Expected State | Expected Output |
+| --- | --- | --- | --- | --- |
+| 1 | Logged Out | Receptionist Login | Receptionist Logged In | "Login successful!" |
+| 2 | Logged Out | Doctor Login | Doctor Logged In | "Login successful!" |
+| 3 | Receptionist Logged In | Logout | Logged Out | "Logged out successfully." |
+| 4 | Doctor Logged In | Logout | Logged Out | "Logged out successfully." |
+| 5 | Logged Out | Invalid Credentials | Logged Out | "Invalid credentials." |
+
+### State Diagram for Appointment Scheduling
+
+1. **Initial State:** No Appointment
+2. **State 1:** Appointment Scheduled
+3. **Final State:** Appointment Cancelled
+
+### Possible Transitions:
+
+- **T1:** No Appointment → Appointment Scheduled (Successful appointment scheduling)
+- **T2:** Appointment Scheduled → Appointment Cancelled (Successful appointment cancellation)
+- **T3:** No Appointment → No Appointment (Invalid scheduling attempt)
+- **T4:** Appointment Scheduled → Appointment Scheduled (Invalid cancellation attempt)
+
+### Test Cases Based on State Transitions:
+
+| Test Case | Initial State | Input | Expected State | Expected Output |
+| --- | --- | --- | --- | --- |
+| 1 | No Appointment | Valid Schedule | Appointment Scheduled | "Appointment scheduled successfully." |
+| 2 | Appointment Scheduled | create Appointment | Appointment created | "Appointment created successfully." |
+| 3 | No Appointment | Invalid Schedule | No Appointment | "Invalid scheduling attempt." |
+| 4 | Appointment Scheduled | Invalid Cancel | Appointment Scheduled | "Invalid cancellation attempt." |
+
+---
+
+# Use Case Testing:
+
+Let's consider the primary use cases for the system:
+
+1. **UC1: User Login**
+2. **UC2: Schedule Appointment**
+3. **UC3: Cancel Appointment**
+4. **UC4: Add Patient Record**
+5. **UC5: View Daily Appointments**
+6. **UC6: Add Prescription**
+
+Each use case can be expanded into scenarios that describe the typical and alternative paths through the system.
+
+### UC1: User Login
+
+**Primary Scenario: Successful Login**
+
+- **Actor:** User (Doctor/Receptionist)
+- **Preconditions:** User has valid credentials.
+- **Steps:**
+    1. User enters username and password.
+    2. System authenticates the credentials.
+    3. System grants access based on user role.
+- **Postconditions:** User is logged in and can access the system's features.
+
+**Alternative Scenario: Failed Login**
+
+- **Actor:** User (Doctor/Receptionist)
+- **Preconditions:** User enters invalid credentials.
+- **Steps:**
+    1. User enters username and password.
+    2. System fails to authenticate credentials.
+    3. System displays an error message.
+- **Postconditions:** User remains logged out.
+
+### UC2: Schedule Appointment
+
+**Primary Scenario: Appointment Scheduled Successfully**
+
+- **Actor:** Receptionist
+- **Preconditions:** Patient and doctor exist in the system; doctor has available time slots.
+- **Steps:**
+    1. Receptionist selects a patient and a doctor.
+    2. Receptionist enters appointment details (date, time).
+    3. System checks the doctor's schedule for conflicts.
+    4. System schedules the appointment.
+    5. System confirms the appointment to the receptionist.
+- **Postconditions:** Appointment is scheduled, and notifications are sent to the patient and doctor.
+
+**Alternative Scenario: Doctor's Schedule Full**
+
+- **Actor:** Receptionist
+- **Preconditions:** Doctor's schedule is full for the selected date and time.
+- **Steps:**
+    1. Receptionist selects a patient and a doctor.
+    2. Receptionist enters appointment details (date, time).
+    3. System checks the doctor's schedule for conflicts.
+    4. System finds no available time slots.
+    5. System notifies the receptionist of the scheduling conflict.
+- **Postconditions:** Appointment is not scheduled.
+
+### UC3: Deleting Patients
+
+**Primary Scenario: Appointment Cancelled Successfully**
+
+- **Actor:** Receptionist
+- **Preconditions:** A Patient exists for the system.
+- **Steps:**
+    1. Receptionist selects an existing patient.
+    2. receptionist deletes the patient.
+    3. System confirms the removal of the patient.
+- **Postconditions:** patient is deleted.
+
+### UC4: Edit Patient Records
+
+**Primary Scenario: Patient Record Added Successfully**
+
+- **Actor:** Receptionist
+- **Preconditions:** Patient is already in the system.
+- **Steps:**
+    1. Receptionist enters patient details (name, ID, contact info).
+    2. Receptionist edits and adds the patient record to the database.
+    3. System confirms the addition to the receptionist.
+- **Postconditions:** Patient record is newly updated to the system.
+
+### UC5: View Daily Appointments
+
+**Primary Scenario: View Appointments**
+
+- **Actor:** Doctor
+- **Preconditions:** Doctor is logged in.
+- **Steps:**
+    1. Doctor requests to view daily appointments.
+    2. System retrieves the list of appointments for the day.
+    3. System displays the appointments to the doctor.
+- **Postconditions:** Doctor views the appointments.
+
+### UC6: Add Prescription
+
+**Primary Scenario: Prescription Added Successfully**
+
+- **Actor:** Doctor
+- **Preconditions:** Patient exists in the system.
+- **Steps:**
+    1. Doctor selects a patient.
+    2. Doctor enters prescription details (medication, dosage, instructions).
+    3. System adds the prescription to the patient's record.
+    4. System confirms the addition to the doctor.
+- **Postconditions:** Prescription is added to the patient's record.
