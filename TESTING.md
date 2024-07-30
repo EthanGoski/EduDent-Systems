@@ -155,110 +155,90 @@ Let's consider the **Appointment Scheduling** and **User Authentication** fe
 
 # Use Case Testing:
 
-Let's consider the primary use cases for the system:
+### Use Case Testing:
+The primary use cases for the system:
 
 1. **UC1: User Login**
 2. **UC2: Schedule Appointment**
-3. **UC3: Cancel Appointment**
+3. **UC3: Edits Patients**
 4. **UC4: Add Patient Record**
 5. **UC5: View Daily Appointments**
 6. **UC6: Add Prescription**
 
 Each use case can be expanded into scenarios that describe the typical and alternative paths through the system.
 
-### UC1: User Login
+**UC1: User Login**
 
 **Primary Scenario: Successful Login**
 
 - **Actor:** User (Doctor/Receptionist)
 - **Preconditions:** User has valid credentials.
-- **Steps:**
-    1. User enters username and password.
-    2. System authenticates the credentials.
-    3. System grants access based on user role.
 - **Postconditions:** User is logged in and can access the system's features.
 
 **Alternative Scenario: Failed Login**
 
 - **Actor:** User (Doctor/Receptionist)
 - **Preconditions:** User enters invalid credentials.
-- **Steps:**
-    1. User enters username and password.
-    2. System fails to authenticate credentials.
-    3. System displays an error message.
 - **Postconditions:** User remains logged out.
 
-### UC2: Schedule Appointment
+| Scenario | Steps | Expected Result |
+| --- | --- | --- |
+| Successful Login | Enter username and password, authenticate, access system | User logged in |
+| Failed Login | Enter invalid credentials, fail to authenticate, display error | User remains logged out |
 
-**Primary Scenario: Appointment Scheduled Successfully**
+**UC2: Schedule Appointment**
 
 - **Actor:** Receptionist
 - **Preconditions:** Patient and doctor exist in the system; doctor has available time slots.
-- **Steps:**
-    1. Receptionist selects a patient and a doctor.
-    2. Receptionist enters appointment details (date, time).
-    3. System checks the doctor's schedule for conflicts.
-    4. System schedules the appointment.
-    5. System confirms the appointment to the receptionist.
 - **Postconditions:** Appointment is scheduled, and notifications are sent to the patient and doctor.
 
 **Alternative Scenario: Doctor's Schedule Full**
 
 - **Actor:** Receptionist
 - **Preconditions:** Doctor's schedule is full for the selected date and time.
-- **Steps:**
-    1. Receptionist selects a patient and a doctor.
-    2. Receptionist enters appointment details (date, time).
-    3. System checks the doctor's schedule for conflicts.
-    4. System finds no available time slots.
-    5. System notifies the receptionist of the scheduling conflict.
 - **Postconditions:** Appointment is not scheduled.
 
-### UC3: Deleting Patients
+| Scenario | Steps | Expected Result |
+| --- | --- | --- |
+| Appointment Scheduled | Select patient and doctor, enter details, check schedule, confirm | Appointment scheduled |
+| Doctor's Schedule Full | Select patient and doctor, enter details, check schedule, notify conflict | Appointment not scheduled |
 
-**Primary Scenario: Appointment Cancelled Successfully**
+**UC3: Deleting Patients**
 
 - **Actor:** Receptionist
 - **Preconditions:** A Patient exists for the system.
-- **Steps:**
-    1. Receptionist selects an existing patient.
-    2. receptionist deletes the patient.
-    3. System confirms the removal of the patient.
+
+| Scenario | Steps | Expected Result |
+| --- | --- | --- |
+| Patient Deleted | Select patient, delete, confirm removal | Patient deleted |
 - **Postconditions:** patient is deleted.
 
-### UC4: Edit Patient Records
-
-**Primary Scenario: Patient Record Added Successfully**
+**UC4: Edit Patient Records**
 
 - **Actor:** Receptionist
 - **Preconditions:** Patient is already in the system.
-- **Steps:**
-    1. Receptionist enters patient details (name, ID, contact info).
-    2. Receptionist edits and adds the patient record to the database.
-    3. System confirms the addition to the receptionist.
+
+| Scenario | Steps | Expected Result |
+| --- | --- | --- |
+| Patient Record Edited | Select patient, enter details, edit record, confirm | Patient record updated |
 - **Postconditions:** Patient record is newly updated to the system.
 
-### UC5: View Daily Appointments
-
-**Primary Scenario: View Appointments**
+**UC5: View Daily Appointments**
 
 - **Actor:** Doctor
 - **Preconditions:** Doctor is logged in.
-- **Steps:**
-    1. Doctor requests to view daily appointments.
-    2. System retrieves the list of appointments for the day.
-    3. System displays the appointments to the doctor.
+
+| Scenario | Steps | Expected Result |
+| --- | --- | --- |
+| View Appointments | Request view, retrieve, display appointments | Appointments displayed |
 - **Postconditions:** Doctor views the appointments.
 
-### UC6: Add Prescription
-
-**Primary Scenario: Prescription Added Successfully**
+**UC6: Add Prescription**
 
 - **Actor:** Doctor
 - **Preconditions:** Patient exists in the system.
-- **Steps:**
-    1. Doctor selects a patient.
-    2. Doctor enters prescription details (medication, dosage, instructions).
-    3. System adds the prescription to the patient's record.
-    4. System confirms the addition to the doctor.
+
+| Scenario | Steps | Expected Result |
+| --- | --- | --- |
+| Prescription Added | Select patient, enter details, add prescription, confirm | Prescription added |
 - **Postconditions:** Prescription is added to the patient's record.
