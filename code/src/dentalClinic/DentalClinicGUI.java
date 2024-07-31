@@ -141,7 +141,7 @@ public class DentalClinicGUI {
                     JOptionPane.showMessageDialog(frame, "Username and password cannot be empty.");
                 } else {
                     if (role.equals("Doctor")) {
-                        clinicManagement.addDoctor(new Doctor(username, password));
+                        clinicManagement.addDoctor(new Doctor(username, password,clinicManagement));
                     } else {
                         clinicManagement.addReceptionist(new Receptionist(username, password, clinicManagement));
                     }
@@ -417,7 +417,7 @@ public class DentalClinicGUI {
 
     private void initializeSampleData() {
         // Sample data for demonstration
-        Doctor doc1 = new Doctor("doc1", "password");
+        Doctor doc1 = new Doctor("doc1", "password", clinicManagement);
         Receptionist rec1 = new Receptionist("rec1", "password", clinicManagement);
         clinicManagement.addDoctor(doc1);
         clinicManagement.addReceptionist(rec1);

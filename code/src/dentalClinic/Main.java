@@ -2,6 +2,7 @@ package dentalClinic;
 
 import java.util.Scanner;
 
+
 /**
  * Main class for the Dental Clinic Management System for system messages on the compiler.
  * 
@@ -16,7 +17,7 @@ public class Main {
     // Currently logged-in user
     private static User loggedInUser = null;
 
-/****************************************************************************\
+    /**************************\
     /**
      * Main method to start the Dental Clinic Management System.
      *
@@ -29,18 +30,23 @@ public class Main {
             showMainMenu();
         }
     }
-/****************************************************************************\
+
+    /**************************\
     /**
      * Initializes sample data for demonstration purposes.
      */
     private static void initializeSampleData() {
+        // Initialize the ClinicManagement instance
+        clinic = new ClinicManagement();
+
         // Sample data for demonstration
-        Doctor doc1 = new Doctor("doc1", "password");
+        Doctor doc1 = new Doctor("doc1", "password", clinic);
         Receptionist rec1 = new Receptionist("rec1", "password",clinic);
         clinic.addDoctor(doc1);
         clinic.addReceptionist(rec1);
     }
-/****************************************************************************\
+
+    /**************************\
     /**
      * Displays the main menu and handles user input.
      */
@@ -64,9 +70,12 @@ public class Main {
                 System.out.println("Invalid option. Please try again.");
         }
     }
-/****************************************************************************\
+
+    /**************************\
     /**
      * Handles user login.
+     * 
+     * Use Case Testing: Validates login functionality for both doctors and receptionists.
      */
     private static void login() {
         System.out.print("\nEnter username: ");
@@ -78,6 +87,7 @@ public class Main {
         if (loggedInUser != null) {
             System.out.println("Login successful!");
 
+            // Display appropriate menu based on user type
             if (loggedInUser instanceof Doctor) {
                 showDoctorMenu((Doctor) loggedInUser);
             } else if (loggedInUser instanceof Receptionist) {
@@ -87,7 +97,8 @@ public class Main {
             System.out.println("Invalid credentials. Please try again.");
         }
     }
-/****************************************************************************\
+
+    /**************************\
     /**
      * Authenticates the user based on username and password.
      *
@@ -108,7 +119,8 @@ public class Main {
         }
         return null;
     }
-/****************************************************************************\
+
+    /**************************\
     /**
      * Displays the menu for the logged-in doctor.
      *
@@ -144,7 +156,8 @@ public class Main {
             }
         }
     }
-/****************************************************************************\
+
+    /**************************\
     /**
      * Displays the menu for the logged-in receptionist.
      *
@@ -196,7 +209,8 @@ public class Main {
             }
         }
     }
-/****************************************************************************\
+
+    /**************************\
     /**
      * Adds a new patient to the clinic.
      *
@@ -205,18 +219,40 @@ public class Main {
     private static void addPatient(Receptionist receptionist) {
         System.out.print("\nEnter patient name: ");
         String name = scanner.nextLine();
-        System.out.print("Enter patient ID: ");
+        System.out.print("Enter patient ID (6 characters): ");
         String patientID = scanner.nextLine();
-        System.out.print("Enter contact info: ");
+        System.out.print("Enter contact info (10 digits): ");
         String contactInfo = scanner.nextLine();
 
-        Patient patient = new Patient(name, patientID, contactInfo);
-        receptionist.addPatient(patient);
-        clinic.addPatient(patient);
+        // Equivalence Class and Boundary Value Analysis: Ensure valid patient data
+        if (isValidPatientData(name, patientID, contactInfo)) {
+            Patient patient = new Patient(name, patientID, contactInfo);
+            receptionist.addPatient(patient);
+            clinic.addPatient(patient);
 
-        System.out.println("Patient added successfully.");
+            System.out.println("Patient added successfully.");
+        } else {
+            System.out.println("Invalid patient data. Please try again.");
+        }
     }
-/****************************************************************************\
+
+    /**************************\
+    /**
+     * Validates patient data.
+     * 
+     * @param name Patient's name.
+     * @param patientID Patient's unique ID.
+     * @param contactInfo Patient's contact information.
+     * @return true if data is valid, false otherwise.
+     */
+    private static boolean isValidPatientData(String name, String patientID, String contactInfo) {
+        // Boundary Value Analysis: Checking for valid lengths and non-empty fields
+        return name != null && !name.isEmpty() &&
+               patientID != null && !patientID.isEmpty() && patientID.length() == 6 && patientID.matches("\\d{6}") &&
+               contactInfo != null && !contactInfo.isEmpty() && contactInfo.length() == 10;
+    }
+
+    /**************************\
     /**
      * Adds a new appointment to the clinic.
      *
@@ -238,16 +274,47 @@ public class Main {
         Doctor doctor = findDoctorByUsername(doctorUsername);
 
         if (patient != null && doctor != null) {
-            Appointment appointment = new Appointment(appointmentID, date, time, patient, doctor);
-            receptionist.addAppointment(appointment);
-            doctor.getDailyAppointments().add(appointment);
+            if (isValidAppointmentTime(time) && doctor.getDailyAppointments().size() < 10) {
+                Appointment appointment = new Appointment(appointmentID, date, time, patient, doctor);
+                receptionist.addAppointment(appointment);
+                doctor.getDailyAppointments().add(appointment);
 
-            System.out.println("Appointment added successfully.");
+                System.out.println("Appointment added successfully.");
+            } else if (doctor.getDailyAppointments().size() >= 10) {
+                System.out.println("Doctor's daily appointment limit reached.");
+            } else {
+                System.out.println("Invalid appointment time. Appointments can only be scheduled between 9:00 AM and 5:00 PM.");
+            }
         } else {
             System.out.println("Invalid patient ID or doctor username.");
         }
     }
-/****************************************************************************\
+
+    /**************************\
+    /**
+     * Validates the appointment time.
+     * 
+     * @param time The time of the appointment.
+     * @return true if the time is within the valid range, false otherwise.
+     */
+    private static boolean isValidAppointmentTime(String time) {
+        // Use Case and State Transition Testing: Ensuring appointments are within business hours
+        String[] timeParts = time.split(":|\\s+");
+        int hour = Integer.parseInt(timeParts[0]);
+        String period = timeParts[2];
+        
+        // Convert time to 24-hour format
+        if ("PM".equalsIgnoreCase(period) && hour != 12) {
+            hour += 12;
+        } else if ("AM".equalsIgnoreCase(period) && hour == 12) {
+            hour = 0;
+        }
+        
+        // Valid appointment times are between 9:00 AM (0900) and 5:00 PM (1700)
+        return hour >= 9 && hour < 17;
+    }
+
+    /**************************\
     /**
      * Adds a new prescription to the clinic.
      *
@@ -267,17 +334,19 @@ public class Main {
 
         Patient patient = findPatientByID(patientID);
 
-        if (patient != null) {
+        if (patient != null && !patientID.isEmpty() && !medication.isEmpty() && !dosage.isEmpty() && !instructions.isEmpty()) {
             Prescription prescription = new Prescription(prescriptionID, patient, medication, dosage, instructions, doctor);
-            doctor.addPrescription(prescription);
-            clinic.addPrescription(prescription);
+            doctor.addPrescription(prescription); // Adds to the doctor's list of prescriptions
+            clinic.addPrescription(prescription); // Ensures the prescription is added to the clinic's system
 
             System.out.println("Prescription added successfully.");
         } else {
-            System.out.println("Invalid patient ID.");
+            System.out.println("Invalid prescription.");
         }
     }
-/****************************************************************************\
+
+
+    /**************************\
     /**
      * Displays the details of a patient.
      */
@@ -295,7 +364,8 @@ public class Main {
             System.out.println("Patient not found.");
         }
     }
-/****************************************************************************\
+
+    /**************************\
     /**
      * Edits the details of an existing patient.
      */
@@ -322,7 +392,8 @@ public class Main {
             System.out.println("Patient not found.");
         }
     }
-/****************************************************************************\
+
+    /**************************\
     /**
      * Deletes a patient from the clinic.
      */
@@ -338,7 +409,8 @@ public class Main {
             System.out.println("Patient not found.");
         }
     }
-/****************************************************************************\
+
+    /**************************\
     /**
      * Searches for patients by name or contact information.
      */
@@ -362,7 +434,8 @@ public class Main {
             System.out.println("No patients found matching the search term.");
         }
     }
-/****************************************************************************\
+
+    /**************************\
     /**
      * Finds a patient by their unique ID.
      *
@@ -377,7 +450,8 @@ public class Main {
         }
         return null;
     }
-/****************************************************************************\
+
+    /**************************\
     /**
      * Finds a doctor by their username.
      *

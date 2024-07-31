@@ -13,21 +13,23 @@ import java.util.List;
 public class Receptionist extends User {
     // List of patients managed by the receptionist
     private List<Patient> patients;
-    private ClinicManagement clinicManagement;
-/****************************************************************************\
- /**
- * Constructs a new Receptionist instance.
- *
- * @param username Username of the receptionist.
- * @param password Password of the receptionist.
- */
-public Receptionist(String username, String password, ClinicManagement clinicManagement) {
-	super(username, password);
-    this.patients = new ArrayList<>();
-    this.clinicManagement = clinicManagement;
-}
+    private ClinicManagement clinic;
 
-/****************************************************************************\
+
+/**************************\
+    /**
+     * Constructs a new Receptionist instance.
+     *
+     * @param username Username of the receptionist.
+     * @param password Password of the receptionist.
+ * @param clinic 
+     */
+    public Receptionist(String username, String password, ClinicManagement clinic) {
+        super(username, password);
+        this.patients = new ArrayList<>();
+        this.clinic = clinic; // Store the clinic instance
+    }
+/**************************\
     /**
      * Adds a new patient to the list of patients managed by the receptionist.
      *
@@ -36,7 +38,7 @@ public Receptionist(String username, String password, ClinicManagement clinicMan
     public void addPatient(Patient patient) {
         patients.add(patient);
     }
-/****************************************************************************\
+/**************************\
     /**
      * Adds a new appointment to the clinic's appointment list.
      *
@@ -46,19 +48,23 @@ public Receptionist(String username, String password, ClinicManagement clinicMan
         ClinicManagement clinicManagement = new ClinicManagement();
         clinicManagement.addAppointment(appointment);
     }
-/****************************************************************************\
+/**************************\
     /**
      * Prints the list of pending prescriptions to the console.
      * Each prescription is printed on a new line.
      */
     public void viewPrescriptions() {
-        List<Prescription> prescriptions = clinicManagement.getPrescriptions();
-        System.out.println("Pending Prescriptions:");
-        for (Prescription prescription : prescriptions) {
-            System.out.println(prescription);
+        List<Prescription> prescriptions = clinic.getPrescriptions(); // Access the existing clinic instance
+        if (prescriptions.isEmpty()) {
+            System.out.println("No pending prescriptions.");
+        } else {
+            System.out.println("Pending Prescriptions:");
+            for (Prescription prescription : prescriptions) {
+                System.out.println(prescription);
+            }
         }
     }
-/****************************************************************************\
+/**************************\
     /**
      * Returns the list of patients managed by the receptionist.
      *

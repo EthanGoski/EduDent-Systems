@@ -17,20 +17,20 @@ public class Doctor extends User {
     // List of prescriptions written by the doctor
     private List<Prescription> prescriptions;
 
-/****************************************************************************\
+/**************************\
     /**
      * Constructs a new Doctor instance.
      *
      * @param username Username of the doctor.
      * @param password Password of the doctor.
-     * @throws IllegalArgumentException if any parameter is null or blank
+ * @param clinic 
      */
-    public Doctor(String username, String password) {
-    	super(username, password);
+    public Doctor(String username, String password, ClinicManagement clinic) {
+        super(username, password);
         this.dailyAppointments = new ArrayList<>();
         this.prescriptions = new ArrayList<>();
     }
-/****************************************************************************\
+/**************************\
     /**
      * Prints the list of daily appointments to the console.
      * Each appointment is printed on a new line.
@@ -41,7 +41,7 @@ public class Doctor extends User {
             System.out.println(appointment);
         }
     }
-/****************************************************************************\
+/**************************\
     /**
      * Adds a new prescription to the list of prescriptions.
      *
@@ -50,7 +50,7 @@ public class Doctor extends User {
     public void addPrescription(Prescription prescription) {
         prescriptions.add(prescription);
     }
-/****************************************************************************\
+/**************************\
     /**
      * Returns the list of daily appointments for the doctor.
      *
@@ -59,7 +59,7 @@ public class Doctor extends User {
     public List<Appointment> getDailyAppointments() {
         return dailyAppointments;
     }
-/****************************************************************************\
+/**************************\
     /**
      * Returns the list of prescriptions written by the doctor.
      *
