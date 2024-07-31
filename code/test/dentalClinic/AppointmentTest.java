@@ -14,6 +14,7 @@ public class AppointmentTest {
     private Appointment appointment;
     private Patient patient;
     private Doctor doctor;
+    private ClinicManagement clinic;
 
 /****************************************************************************\
     /**
@@ -22,8 +23,9 @@ public class AppointmentTest {
      */
     @Before
     public void setUp() {
+    	  clinic = new ClinicManagement();
         patient = new Patient("John Doe", "P001", "555-1234");
-        doctor = new Doctor("doc1", "password");
+        doctor = new Doctor("doc1", "password",clinic);
         appointment = new Appointment("A001", "2024-07-05", "10:00 AM", patient, doctor);
     }
 /****************************************************************************\
@@ -119,7 +121,9 @@ public class AppointmentTest {
     @Test
     public void testAppointmentInequality() {
         Appointment differentAppointment = new Appointment("A002", "2024-07-06", "11:00 AM", patient, doctor);
-        assertNotEquals(appointment, differentAppointment);
+        Appointment differentAppointment2 = null;
+        assertFalse(appointment.equals(differentAppointment));
+        assertFalse(appointment.equals(differentAppointment2));
     }
 /****************************************************************************\
     /**
@@ -159,8 +163,17 @@ public class AppointmentTest {
      */
     @Test
     public void testChangeDoctor() {
-        Doctor newDoctor = new Doctor("doc2", "newpassword");
+        Doctor newDoctor = new Doctor("doc2", "newpassword",clinic);
         appointment.setDoctor(newDoctor);
         assertEquals(newDoctor, appointment.getDoctor());
+    }
+    @Test
+    public void testHashCode() {
+    	assertEquals(appointment.hashCode(),-1767437154);
+    }
+    @Test
+    public void testEqualityAppointment() {
+    	Appointment appointmentequal = new Appointment("A001", "2024-07-05", "10:00 AM", patient, doctor);
+    	assertTrue(appointment.equals(appointmentequal));
     }
 }

@@ -22,10 +22,12 @@ public class ReceptionistTest {
      */
     @Before
     public void setUp() {
+    	clinic = new ClinicManagement();
         receptionist = new Receptionist("rec1", "password",clinic);
         patient = new Patient("John Doe", "P001", "555-1234");
-        new Appointment("A001", "2024-07-05", "10:00 AM", patient, new Doctor("doc1", "password"));
-        clinic = new ClinicManagement();
+        
+        new Appointment("A001", "2024-07-05", "10:00 AM", patient, new Doctor("doc1", "password",clinic));
+       
     }
 /****************************************************************************\
     /**
@@ -66,25 +68,25 @@ public class ReceptionistTest {
      */
    @Test
     public void testAddAppointment() {
-        Appointment appointment = new Appointment("A001", "2024-07-05", "10:00 AM", patient, new Doctor("doc1", "password"));
+        Appointment appointment = new Appointment("A001", "2024-07-05", "10:00 AM", patient, new Doctor("doc1", "password",clinic));
         receptionist.addAppointment(appointment);
         // Assuming getAppointments() method exists in the clinic management
 //        assertTrue(clinic.getAppointments().contains(appointment));
     }
-/****************************************************************************\
-    /**
-     * Tests viewing prescriptions.
-     * Ensures that the receptionist can correctly view all pending prescriptions.
-     */
+   /****************************************************************************\
+   /**
+    * Tests viewing prescriptions.
+    * Ensures that the receptionist can correctly view all pending prescriptions.
+    */
    @Test
-    public void testViewPrescriptions() {
-        Prescription prescription = new Prescription("RX001", patient, "Ibuprofen", "200mg", "Take twice daily", new Doctor("doc1", "password"));
-        // Assuming addPrescription() method exists in the clinic management
-        clinic.addPrescription(prescription);
-        receptionist.viewPrescriptions();
-        // Assuming getPrescriptions() method exists in the clinic management
-       assertTrue(clinic.getPrescriptions().contains(prescription));
-    }
+   public void testViewPrescriptions() {
+       Prescription prescription = new Prescription("RX001", patient, "Ibuprofen", "200mg", "Take twice daily", new Doctor("doc1", "password",clinic));
+       // Assuming addPrescription() method exists in the clinic management
+       clinic.addPrescription(prescription);
+       receptionist.viewPrescriptions();
+       // Assuming getPrescriptions() method exists in the clinic management
+      assertTrue(clinic.getPrescriptions().contains(prescription));
+   }
 /****************************************************************************\
     /**
      * Tests finding a patient by their ID.

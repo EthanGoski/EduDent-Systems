@@ -28,7 +28,7 @@ public class ClinicManagementSystemTest {
     @Before
     public void setUp() {
         clinic = new ClinicManagement();
-        doctor = new Doctor("doc1", "password");
+        doctor = new Doctor("doc1", "password",clinic);
         receptionist = new Receptionist("rec1", "password",clinic);
         patient = new Patient("John Doe", "P001", "555-1234");
         patient2 = new Patient("Jane Smith", "P002", "555-5678");
@@ -390,5 +390,20 @@ public class ClinicManagementSystemTest {
             }
         }
         return null;
+    }
+    @Test
+    public void testGetPatientPrescriptions() {
+
+    	Prescription prescription = new Prescription("RX001", patient, "Ibuprofen", "200mg", "Take twice daily",  new Doctor("doc1", "password",clinic));
+    	clinic.addPrescription(prescription);
+    	clinic.getPrescriptionsByPatient(patient);
+    	System.out.println(clinic.getPrescriptionsByPatient(patient));
+    }
+    @Test
+    public void testGetPatientAppointments() {
+        Appointment appointment = new Appointment("A001", "2024-07-05", "10:00 AM", patient, new Doctor("doc1", "password",clinic));
+        clinic.addAppointment(appointment);
+    	clinic.getAppointmentsByPatient(patient);
+    	System.out.println(clinic.getAppointmentsByPatient(patient));
     }
 }

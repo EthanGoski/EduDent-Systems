@@ -14,7 +14,7 @@ public class DoctorTest {
     private Patient patient;
     private Appointment appointment;
     private Prescription prescription;
-
+    private ClinicManagement clinic;
 /****************************************************************************\
     /**
      * Sets up the test environment before each test.
@@ -22,7 +22,8 @@ public class DoctorTest {
      */
     @Before
     public void setUp() {
-        doctor = new Doctor("doc1", "password");
+    	 clinic = new ClinicManagement();
+        doctor = new Doctor("doc1", "password",clinic);
         patient = new Patient("John Doe", "P001", "555-1234");
         appointment = new Appointment("A001", "2024-07-05", "10:00 AM", patient, doctor);
         prescription = new Prescription("RX001", patient, "Ibuprofen", "200mg", "Take twice daily", doctor);

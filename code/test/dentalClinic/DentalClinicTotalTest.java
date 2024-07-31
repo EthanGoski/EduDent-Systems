@@ -41,17 +41,18 @@ public class DentalClinicTotalTest {
      */
     @Before
     public void setUp() {
+    	 clinic = new ClinicManagement();
         patient = new Patient("John Doe", "P001", "555-1234");
-        doctor = new Doctor("doc1", "password");
+        doctor = new Doctor("doc1", "password",clinic);
         appointment = new Appointment("A001", "2024-07-05", "10:00 AM", patient, doctor);
-        clinic = new ClinicManagement();
+       
         receptionist = new Receptionist("rec1", "password",clinic);
         prescription = new Prescription("RX001", patient, "Ibuprofen", "200mg", "Take twice daily", doctor);
         patient2 = new Patient("Jane Smith", "P002", "555-5678");
         appointment2 = new Appointment("A002", "2024-07-05", "11:00 AM", patient2, doctor);
         prescription2 = new Prescription("RX002", patient2, "Paracetamol", "500mg", "Take thrice daily", doctor);
         receptionist = new Receptionist("rec1", "password",clinic);
-        new Appointment("A001", "2024-07-05", "10:00 AM", patient, new Doctor("doc1", "password"));
+        new Appointment("A001", "2024-07-05", "10:00 AM", patient, new Doctor("doc1", "password",clinic));
     }
 /****************************************************************************\
     /**
@@ -186,7 +187,7 @@ public class DentalClinicTotalTest {
      */
     @Test
     public void testChangeDoctor() {
-        Doctor newDoctor = new Doctor("doc2", "newpassword");
+        Doctor newDoctor = new Doctor("doc2", "newpassword",clinic);
         appointment.setDoctor(newDoctor);
         assertEquals(newDoctor, appointment.getDoctor());
     }
@@ -416,15 +417,15 @@ public void testViewDailyAppointments() {
 }
 @Test
 public void testGetPatientAppointments() {
-    Appointment appointment = new Appointment("A001", "2024-07-05", "10:00 AM", patient, new Doctor("doc1", "password"));
+    Appointment appointment = new Appointment("A001", "2024-07-05", "10:00 AM", patient, new Doctor("doc1", "password",clinic));
     clinic.addAppointment(appointment);
 	clinic.getAppointmentsByPatient(patient);
-	System.out.println("hi" + clinic.getAppointmentsByPatient(patient));
+	System.out.println(clinic.getAppointmentsByPatient(patient));
 }
 @Test
 public void testGetPatientPrescriptions() {
 
-	Prescription prescription = new Prescription("RX001", patient, "Ibuprofen", "200mg", "Take twice daily",  new Doctor("doc1", "password"));
+	Prescription prescription = new Prescription("RX001", patient, "Ibuprofen", "200mg", "Take twice daily",  new Doctor("doc1", "password",clinic));
 	clinic.addPrescription(prescription);
 	clinic.getPrescriptionsByPatient(patient);
 	System.out.println(clinic.getPrescriptionsByPatient(patient));
@@ -515,6 +516,16 @@ public void testSearchPatients() {
         }
     }
     assertTrue(found);
+}
+/****************************************************************************\
+/**
+ * Tests adding an appointment.
+ * Ensures that the appointment is correctly added to the clinic.
+ */
+@Test
+public void testReceptionistAddAppointment() {
+    Appointment appointment = new Appointment("A001", "2024-07-05", "10:00 AM", patient, new Doctor("doc1", "password",clinic));
+    receptionist.addAppointment(appointment);
 }
 /****************************************************************************\
 /**
@@ -654,8 +665,9 @@ public void testGetInstructions() {
 @Test
 public void testPrescriptionToString() {
 	System.out.println(prescription.toString());
-    String expected = "Prescription [ID=RX001, Medication=Ibuprofen, Dosage=200mg, Instructions=Take twice daily, Patient=John Doe, Doctor=doc1]";
+    String expected = "Prescription [ID=RX001, Patient=Patient [Name=John Doe, ID=P001, Contact=555-1234], Medication=Ibuprofen, Dosage=200mg, Instructions=Take twice daily, Doctor="+doctor+"]";
     assertEquals(expected, prescription.toString());
+   
 }
 /****************************************************************************\
 /**
@@ -685,9 +697,9 @@ public void testUpdatePatient() {
  * Ensures that the appointment is correctly added to the clinic.
  */
 @Test
-public void testReceptionistAddAppointment() {
-    Appointment appointment = new Appointment("A001", "2024-07-05", "10:00 AM", patient, new Doctor("doc1", "password"));
-    receptionist.addAppointment(appointment);
+public void testClinicAddAppointment() {
+    Appointment appointment = new Appointment("A001", "2024-07-05", "10:00 AM", patient, new Doctor("doc1", "password",clinic));
+    clinic.addAppointment(appointment);
     // Assuming getAppointments() method exists in the clinic management
    assertTrue(clinic.getAppointments().contains(appointment));
 }
@@ -698,12 +710,35 @@ public void testReceptionistAddAppointment() {
  */
 @Test
 public void testViewPrescriptions() {
-    Prescription prescription = new Prescription("RX001", patient, "Ibuprofen", "200mg", "Take twice daily", new Doctor("doc1", "password"));
+    Prescription prescription = new Prescription("RX001", patient, "Ibuprofen", "200mg", "Take twice daily", new Doctor("doc1", "password",clinic));
     // Assuming addPrescription() method exists in the clinic management
     clinic.addPrescription(prescription);
     receptionist.viewPrescriptions();
     // Assuming getPrescriptions() method exists in the clinic management
    assertTrue(clinic.getPrescriptions().contains(prescription));
+}
+@Test
+public void testSetMaxMinDate() {
+    // Test minimum date boundary
+    appointment.setDate("2024-01-01");
+    assertEquals("2024-01-01", appointment.getDate());
+
+    // Test maximum date boundary
+    appointment.setDate("2024-12-31");
+    assertEquals("2024-12-31", appointment.getDate());
+}
+
+@Test
+public void testAddPatientBoundaryValues() {
+    // Minimum length ID
+    Patient patientMinID = new Patient("John Doe", "P1", "555-1234");
+    receptionist.addPatient(patientMinID);
+    assertTrue(receptionist.getPatients().contains(patientMinID));
+
+    // Maximum length ID
+    Patient patientMaxID = new Patient("John Doe", "P123456789012345", "555-1234");
+    receptionist.addPatient(patientMaxID);
+    assertTrue(receptionist.getPatients().contains(patientMaxID));
 }
 
 }

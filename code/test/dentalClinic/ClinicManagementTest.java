@@ -25,7 +25,7 @@ public class ClinicManagementTest {
     @Before
     public void setUp() {
         clinic = new ClinicManagement();
-        doctor = new Doctor("doc1", "password");
+        doctor = new Doctor("doc1", "password",clinic);
         receptionist = new Receptionist("rec1", "password",clinic);
         patient = new Patient("John Doe", "P001", "555-1234");
         appointment = new Appointment("A001", "2024-07-05", "10:00 AM", patient, doctor);

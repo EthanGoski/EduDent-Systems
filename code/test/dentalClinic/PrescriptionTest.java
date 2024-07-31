@@ -13,7 +13,7 @@ public class PrescriptionTest {
     private Prescription prescription;
     private Patient patient;
     private Doctor doctor;
-
+    private ClinicManagement clinic;
 /****************************************************************************\
     /**
      * Sets up the test environment before each test.
@@ -21,8 +21,9 @@ public class PrescriptionTest {
      */
     @Before
     public void setUp() {
+    	 clinic = new ClinicManagement();
         patient = new Patient("John Doe", "P001", "555-1234");
-        doctor = new Doctor("doc1", "password");
+        doctor = new Doctor("doc1", "password",clinic);
         prescription = new Prescription("RX001", patient, "Ibuprofen", "200mg", "Take twice daily", doctor);
     }
 /****************************************************************************\
@@ -79,45 +80,16 @@ public class PrescriptionTest {
     public void testGetDoctor() {
         assertEquals(doctor, prescription.getDoctor());
     }
-/****************************************************************************\
-    /**
-     * Tests the setMedication method.
-     * Ensures that the medication of the prescription can be correctly updated.
-     */
-//    @Test
-//    public void testSetMedication() {
-//        prescription.setMedication("Paracetamol");
-//        assertEquals("Paracetamol", prescription.getMedication());
-//    }
-/****************************************************************************\
-    /**
-     * Tests the setDosage method.
-     * Ensures that the dosage of the prescription can be correctly updated.
-     */
-//    @Test
-//    public void testSetDosage() {
-//        prescription.setDosage("300mg");
-//        assertEquals("300mg", prescription.getDosage());
-//    }
-/****************************************************************************\
-    /**
-     * Tests the setInstructions method.
-     * Ensures that the instructions for taking the medication can be correctly updated.
-     */
-//    @Test
-//    public void testSetInstructions() {
-//        prescription.setInstructions("Take thrice daily");
-//        assertEquals("Take thrice daily", prescription.getInstructions());
-//    }
-/****************************************************************************\
+
     /**
      * Tests the toString method.
      * Ensures that the method returns the correct string representation of the prescription.
      */
     @Test
-    public void testToString() {
+    public void testPrescriptionToString() {
     	System.out.println(prescription.toString());
-        String expected = "Prescription [ID=RX001, Medication=Ibuprofen, Dosage=200mg, Instructions=Take twice daily, Patient=John Doe, Doctor=doc1]";
+        String expected = "Prescription [ID=RX001, Patient=Patient [Name=John Doe, ID=P001, Contact=555-1234], Medication=Ibuprofen, Dosage=200mg, Instructions=Take twice daily, Doctor="+doctor+"]";
         assertEquals(expected, prescription.toString());
+       
     }
 }
