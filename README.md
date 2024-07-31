@@ -374,8 +374,11 @@ The test coverage is arguably the most important part of testing our code for th
   - This was because the tests included checks for passwords, which are hardcoded.
   - Testing password-related functionality was deemed unnecessary since we are not connected to a backend database like MySQL.
 
-- **Appointment.java Test Coverage (98.6%)**
-  - The test coverage for `Appointment.java` achieved 98.6%.
+- **Reciptionest.java (93.2%)**
+  - It didn't achieve a 100% because of the view prescription method that tests if the prescription is empty or not. It doen't display prescriptions if it doesn't exist in the database
+
+- **Appointment.java Test Coverage (78.3%)**
+  - The test coverage for `Appointment.java` achieved 78.3%.
   - We did not achieve 100% coverage due to the nature of a function within the class. This function compares two appointments and returns    true if they are identical or false if they are different. It also checks if any individual components within each appointment are the      same. However, since the initial comparison often returns true, the checks for individual components do not proceed further.
 
 - **Main Method Test Coverage (0%)**
